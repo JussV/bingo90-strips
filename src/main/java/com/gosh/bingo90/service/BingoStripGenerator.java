@@ -1,6 +1,7 @@
 package com.gosh.bingo90.service;
 
 import com.gosh.bingo90.Constants;
+import com.gosh.bingo90.domain.BingoStrip;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -9,17 +10,14 @@ import java.util.stream.IntStream;
 
 public class BingoStripGenerator {
 
-    private int[][] bingoStrip = new int[Constants.BINGO_STRIP_ROWS][Constants.BINGO_STRIP_COLUMNS];
-    private Random random;
-    private long rndSeed;
+    private final int[][] bingoStrip = new int[Constants.BINGO_STRIP_ROWS][Constants.BINGO_STRIP_COLUMNS];
+    private final Random random;
 
     public BingoStripGenerator(long rndSeed) {
-        this.rndSeed = rndSeed;
         this.random = new Random(rndSeed);
-        this.generateStrip();
     }
 
-    private void generateStrip() {
+    public BingoStrip generateStrip() {
         // counts numbers added per row
         int[] rowNumbersCounter = new int[Constants.BINGO_STRIP_ROWS];
 
@@ -79,7 +77,7 @@ public class BingoStripGenerator {
                     });
         });
         this.sortTicketColumnsExcludingZeros();
-        this.stripeToString();
+        return new BingoStrip(bingoStrip);
     }
 
     /**
