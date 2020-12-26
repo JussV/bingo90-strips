@@ -1,10 +1,9 @@
 package com.gosh.bingo90.service;
 
 import com.gosh.bingo90.domain.BingoStrip;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -17,6 +16,7 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 class BingoStripGeneratorTest {
 
     private static BingoStrip bingoStrip;
@@ -39,12 +39,10 @@ class BingoStripGeneratorTest {
             7,80,
             8,91 // 90 is inclusive in this list
     );
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
 
     @BeforeAll
     public static void generateBingoStrip() {
-        BingoStripGenerator bingoStripGenerator = new BingoStripGenerator(Instant.now().toEpochMilli());
+        BingoStripGenerator bingoStripGenerator = new BingoStripGenerator();
         bingoStrip = bingoStripGenerator.generateStrip();
         AtomicInteger index = new AtomicInteger(0);
         tickets = Arrays.stream(bingoStrip.getStrip())
@@ -107,12 +105,10 @@ class BingoStripGeneratorTest {
 
     @Test
     void generate10kBingoStripsInLessThan1s() {
-        long rndSeed = Instant.now().toEpochMilli();
         Instant startTime = Instant.now();
         log.info("Start time: " + startTime);
         for (int i = 0; i < 10000; i++) {
-            new BingoStripGenerator(rndSeed);
-            rndSeed++;
+            new BingoStripGenerator();
         }
         Instant endTime = Instant.now();
         log.info("End time:" + endTime);

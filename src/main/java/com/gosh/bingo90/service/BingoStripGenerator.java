@@ -1,26 +1,39 @@
 package com.gosh.bingo90.service;
 
-import com.gosh.bingo90.Constants;
+import com.gosh.bingo90.utils.Constants;
 import com.gosh.bingo90.domain.BingoStrip;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.gosh.bingo90.web.rest.exceptions.BingoStripsCounterNotInRangeException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
+@Service
+@Slf4j
 public class BingoStripGenerator {
 
-    private final int[][] bingoStrip = new int[Constants.BINGO_STRIP_ROWS][Constants.BINGO_STRIP_COLUMNS];
-    private final Random random;
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private int[][] bingoStrip;
 
-    public BingoStripGenerator(long rndSeed) {
-        this.random = new Random(rndSeed);
+    public List<BingoStrip> generateStrips(Long count) {
+        if (count > Constants.MAX_BINGO_STRIPS_GENERATED_AT_ONCE) {
+            throw new BingoStripsCounterNotInRangeException(count);
+        }
+
+        List<BingoStrip> bingoStrips = new ArrayList<>();
+        LongStream.range(0, count).boxed().forEach(strip -> bingoStrips.add(this.generateStrip()));
+        log.info("{} bingo strips are generated", count);
+        return bingoStrips;
     }
 
     public BingoStrip generateStrip() {
+        Random random = new Random(Instant.now().toEpochMilli());
+        this.bingoStrip = new int[Constants.BINGO_STRIP_ROWS][Constants.BINGO_STRIP_COLUMNS];
+
         // counts numbers added per row
         int[] rowNumbersCounter = new int[Constants.BINGO_STRIP_ROWS];
 
@@ -147,16 +160,4 @@ public class BingoStripGenerator {
                 }));
     }
 
-    /**
-     * Print bingo stripe
-     */
-    public void stripeToString() {
-        IntStream.range(0, bingoStrip.length).boxed()
-            .forEach(i -> {
-                IntStream.range(0, bingoStrip[0].length)
-                    .boxed()
-                    .forEach(j -> log.info(String.format("%s , ", bingoStrip[i][j])));
-                    log.info("\n");
-                });
-    }
 }

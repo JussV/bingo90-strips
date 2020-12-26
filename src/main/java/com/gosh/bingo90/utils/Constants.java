@@ -1,4 +1,4 @@
-package com.gosh.bingo90;
+package com.gosh.bingo90.utils;
 
 /**
  * Application constants.
@@ -11,8 +11,7 @@ public final class Constants {
     public static final int BINGO_STRIP_TICKETS = 6;
     public static final int BINGO_STRIP_TICKET_ROWS = 3;
     public static final int BINGO_90_TOTAL_NUMBERS = 90;
-
-
+    public static final long MAX_BINGO_STRIPS_GENERATED_AT_ONCE = 100000;
 
     private Constants() {
     }
