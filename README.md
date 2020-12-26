@@ -1,5 +1,5 @@
-# bingo90-stripes
-Generator of bingo 90 stripes
+# bingo90-strips
+Generator of bingo 90 strips
 
 REST API for generating bingo 90 strips
 
