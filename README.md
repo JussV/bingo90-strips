@@ -14,6 +14,7 @@ Clone project from github repo https://github.com/JussV/bingo90-stripes.git
 Then in the root folder of the project execute:
 
  <code>mvn clean install</code>
+
  <code>mvn spring-boot:run</code>
 
 # REST API
