@@ -44,3 +44,7 @@ Empty values in the strip are marked with 0s.
   
   This algorithm can be effectively used to generate large amounts of bingo strips at once, but the api request is limited to generate up to 100000 strips at once. 
   However, to test the performance of the algorithm the recommended way is to alter the test <code>generate10kBingoStripsInLessThan1s</code> with more than 10k strips.
+
+Finally, there are 6 unit tests to validate the correctness of the generated bingo strip.
+Run them by executing:
+<code> mvn clean test </code>
