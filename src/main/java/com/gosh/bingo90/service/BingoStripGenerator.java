@@ -2,6 +2,8 @@ package com.gosh.bingo90.service;
 
 import com.gosh.bingo90.Constants;
 import com.gosh.bingo90.domain.BingoStrip;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,6 +14,7 @@ public class BingoStripGenerator {
 
     private final int[][] bingoStrip = new int[Constants.BINGO_STRIP_ROWS][Constants.BINGO_STRIP_COLUMNS];
     private final Random random;
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     public BingoStripGenerator(long rndSeed) {
         this.random = new Random(rndSeed);
@@ -152,8 +155,8 @@ public class BingoStripGenerator {
             .forEach(i -> {
                 IntStream.range(0, bingoStrip[0].length)
                     .boxed()
-                    .forEach(j -> System.out.print(bingoStrip[i][j] + ","));
-                    System.out.println();
+                    .forEach(j -> log.info(String.format("%s , ", bingoStrip[i][j])));
+                    log.info("\n");
                 });
     }
 }
